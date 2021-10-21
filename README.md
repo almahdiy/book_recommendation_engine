@@ -1,29 +1,62 @@
 # Book Recommendation Engine
 
 
-### Question/need:
-###### What is the framing question of your analysis, or the purpose of the model/system you plan to build?
-One of my favorite things to do at my spare time is to read books. In this project, I will build a book recommendation engine based [Goodreads.com] book data. I have previously implemented a recommendation system, but it was basic; it used collaborative filtering (looking at users who have liked similar items and recommend their other likes to the target user) and SVD matrix factorization. For this project, I want to implement content-based filtering, and use unsupervised machine learning and natural language processing to add an additional layer of complexity, by considering the descriptions of the books.
-###### Who benefits from exploring this question or building this model/system?
-The system will help users find books similar to those they have already read and liked. This is also a proof-of-concept, but the same approach can be used to build recommendation engines for movies, music, online courses, travel destinations, foods, etc, as long as data sets can be found/collected. 
+### Abstract
 
-### Data Description:
-###### What dataset(s) do you plan to use, and how will you obtain the data?
-I found a Goodreads dataset on Kaggle, but it does not contain book descriptions. Therefore, I will attempt to generate my own dataset by web scrapping. 
-###### What is an individual sample/unit of analysis in this project? What characteristics/features do you expect to work with?
-Book title, description, author, publisher, year of publishing, genre(s), and number of pages. I do not think I should consider star ratings, because it is not a characteristic of the book and people could have different tastes in books, but I might experiment with it. 
-###### If modeling, what will you predict as your target?
-I will build an unsupervised model, which I can give books that I like and it will tell me which other books are similar to it, based on the similarity/distance/whether they fall in the same cluster as books I have previously liked.
-
-### Tools:
-###### How do you intend to meet the tools requirement of the project?
-I will most likely use scikit-learn to build my unsupervised model, in addition to text preprocessing and vectorization. 
-###### Are you planning in advance to need or use additional tools beyond those required?
-Like I said, I will collect data myself, so I will need to use web scrapping libraries such as BeautifuISoap. In addition to Bokeh to generate the report. I know BERT is the cutting-edge NLP technology, but I don’t know much about it and I don’t know if it’s applicable here. I will play around with it as I build my recommender and figure that out.
-
-### MVP Goal:
-###### What would a minimum viable product (MVP) look like for this project?
-I am thinking an interactive HTML report where user can hover over dots (representing books) in the chart, and see their information, and the other books in the same cluster. 
+One of my favorite things to do at my spare time is to read books. In this project, I wanted to build a book recommendation engine. I have previously implemented a recommendation system, but it was basic; it used collaborative filtering (looking at users who have liked similar items and recommend their other likes to the target user) and SVD matrix factorization. For this project, I wanted to implement content-based filtering, and use natural language processing, by considering the descriptions/summaries of the books.
 
 
+### Design
+
+The initial design of the project was based on book descriptions obtained through web scraping from [Goodreads.com]. However, the final product uses book plot summaries instead of short descriptions, as many of them turned out to be quite vague. It uses state-of-the-art natural language processing transformer, BERT, to generate embeddings for the book summaries, as well as cosine similarity as a way to find most similar books in the vector space. In addition, other experiments which have been conducted, that include an unsupervised machine learning approaches, can be found in the notebook.
+
+
+### Data
+
+The experiment started off with a dataset collected through web scraping (request, BeautifulSoap, and Selenium) and included book descriptions, and contained 30,000 rows and 7 columns. This was later replaced by the [CMU Book Summary Dataset] 16,559 rows and 7 columns, of which only the book title and summary columns are relevant.
+
+
+### Algorithms
+
+###### Feature Engineering
+-	Data preprocessing:
+o	Removal of non-alphanumeric characters except for the space: using a regular expression.
+o	Converting the entire text to lowercase for unification purposes.
+o	Stopword removal using NLTK.
+o	Creation of bigrams using Gensim
+o	Lemmatization using NLTK WordNet lemmatizer
+o	Stemming using NLTK Snowball stemmer.
+-	TF-IDF for vectorizing the book summaries.
+-	SequenceTransformer for vectorizing the book summaries (embedding)
+
+###### Modeling
+-	DBSCAN for clustering.
+
+###### Similarity metric
+-	Cosine Similarity
+
+### Tools
+-	[request]
+-	[BeautifulSoap]
+-	[Selenium]
+-	[NLTK]
+-	[Gensim]
+-	[SequenceTransformer]
+-	[Scikit-learn]
+
+### Communication
+Presentation slides can be found in the repository in both PowerPoint and PDF formats. 
+
+
+
+[CMU Book Summary Dataset]: https://www.cs.cmu.edu/~dbamman/booksummaries.html
+
+[SequenceTransformer]: https://www.sbert.net
+
+[request]: https://docs.python-requests.org/en/latest/
+[BeautifulSoap]: https://beautiful-soup-4.readthedocs.io/en/latest/
+[Selenium]: https://selenium-python.readthedocs.io
+[NLTK]: http://www.nltk.org
+[Gensim]: https://radimrehurek.com/gensim/
+[Scikit-learn]: https://scikit-learn.org/stable/
 [Goodreads.com]: https://www.goodreads.com
