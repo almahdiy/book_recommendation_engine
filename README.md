@@ -45,7 +45,7 @@ o	Stemming using NLTK Snowball stemmer.
 -	[Scikit-learn]
 
 ### Communication
-Presentation slides can be found in the repository in both PowerPoint and PDF formats. 
+Presentation slides can be found in the repository in PDF format. 
 
 
 
